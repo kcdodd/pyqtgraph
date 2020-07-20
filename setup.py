@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 DESCRIPTION = """\
 PyQtGraph is a pure-python graphics and GUI library built on PyQt4/PyQt5/PySide/PySide2 and
-numpy. 
+numpy.
 
 It is intended for use in mathematics / scientific / engineering applications.
 Despite being written entirely in python, the library is very fast due to its
@@ -63,7 +63,7 @@ sys.path.insert(0, os.path.join(path, 'tools'))
 import setupHelpers as helpers
 
 ## generate list of all sub-packages
-allPackages = (helpers.listAllPackages(pkgroot='pyqtgraph') + 
+allPackages = (helpers.listAllPackages(pkgroot='pyqtgraph') +
                ['pyqtgraph.'+x for x in helpers.listAllPackages(pkgroot='examples')])
 
 ## Decide what version string to use in the build
@@ -82,9 +82,9 @@ class Build(build.build):
         buildPath = os.path.join(path, self.build_lib)
         if os.path.isdir(buildPath):
             distutils.dir_util.remove_tree(buildPath)
-    
+
         ret = build.build.run(self)
-        
+
 
 class Install(install.install):
     """
@@ -94,22 +94,22 @@ class Install(install.install):
     """
     def run(self):
         global path, version, initVersion, forcedVersion, installVersion
-        
+
         name = self.config_vars['dist_name']
         path = os.path.join(self.install_libbase, 'pyqtgraph')
         if os.path.exists(path):
             raise Exception("It appears another version of %s is already "
-                            "installed at %s; remove this before installing." 
+                            "installed at %s; remove this before installing."
                             % (name, path))
         print("Installing to %s" % path)
         rval = install.install.run(self)
 
-        
+
         # If the version in __init__ is different from the automatically-generated
         # version string, then we will update __init__ in the install directory
         if initVersion == version:
             return rval
-        
+
         try:
             initfile = os.path.join(path, '__init__.py')
             data = open(initfile, 'r').read()
@@ -124,15 +124,15 @@ class Install(install.install):
                 raise
             installVersion = initVersion
             sys.excepthook(*sys.exc_info())
-    
+
         return rval
 
 
 setup(
     version=version,
-    cmdclass={'build': Build, 
+    cmdclass={'build': Build,
               'install': Install,
-              'deb': helpers.DebCommand, 
+              'deb': helpers.DebCommand,
               'test': helpers.TestCommand,
               'debug': helpers.DebugCommand,
               'mergetest': helpers.MergeTestCommand,
@@ -142,6 +142,7 @@ setup(
     package_data={'pyqtgraph.examples': ['optics/*.gz', 'relativity/presets/*.cfg']},
     install_requires = [
         'numpy>=1.8.0',
+        'numba>=0.50.1'
         ],
     **setupOpts
 )
